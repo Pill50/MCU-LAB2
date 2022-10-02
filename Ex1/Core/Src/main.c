@@ -291,17 +291,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(counter > 0) {
 		counter--;
-		if(counter == 50 || counter == 0) {
-			//LED RED & DOT BLINK 1s
-			if(counter == 0) {
-				HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-				HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-				counter = 100;
-			}
-			// SWITCH 4 LED7SEG 500ms
-//			clearLed();
+		// SWITCH 4 LED7SEG 250ms
+		if(counter % 25 == 0) {
 			update7SEG(index_led++);
 			if(index_led >= 4) index_led = 0;
+		}
+		//LED RED & DOT BLINK 1s
+		if(counter == 0) {
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+			HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+			counter = 100;
 		}
 	}
 }
