@@ -166,39 +166,32 @@ int main(void)
 //  clearLed();
   setTimer1(1000);
 //  setTimer2(50);
-//  setTimer3(1000);
+  setTimer3(1000);
   while (1)
   {
 	  // LED BLINK AND DOT
 	  if(timer1_flag == 1) {
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-		setTimer1(2000);
+		setTimer1(1000);
 	  }
-	  // UPDATE LED7SEG
-//	  if(timer2_flag == 1) {
-//		update7SEG(index_led);
-//		index_led++;
-//		if(index_led >= 4) index_led = 0;
-//		countLed = 5;
-//	  }
 	  // UPDATE TIME
-//	  if(timer3_flag == 1) {
-//		  second++;
-//		  if (second >= 60){
-//			  second = 0;
-//			  minute++;
-//		  }
-//		  if(minute >= 60){
-//			  minute = 0;
-//			  hour++;
-//		  }
-//		  if(hour >= 24){
-//			  hour = 0;
-//		  }
-//		  updateClockBuffer();
-//		  setTimer3(1000);
-//	  }
+	  if(timer3_flag == 1) {
+		  second++;
+		  if (second >= 60){
+			  second = 0;
+			  minute++;
+		  }
+		  if(minute >= 60){
+			  minute = 0;
+			  hour++;
+		  }
+		  if(hour >= 24){
+			  hour = 0;
+		  }
+		  updateClockBuffer();
+		  setTimer3(1000);
+	  }
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
@@ -327,8 +320,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+int countLed = 5;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+	if(countLed <= 0) {
+		update7SEG(index_led);
+		index_led++;
+		if(index_led >= 4) index_led = 0;
+		countLed = 5;
+	}
+	countLed--;
 	timerRun();
 }
 /* USER CODE END 4 */
