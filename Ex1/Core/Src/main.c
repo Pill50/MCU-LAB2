@@ -142,6 +142,15 @@ void setCol(uint8_t val){
 	HAL_GPIO_WritePin(ENM7_GPIO_Port, ENM7_Pin, ((val>>0)&0x01));
 }
 
+void shiftLeft()
+{
+	uint8_t temp = matrix_buffer[0];
+	for(int i = 0; i < 8; i++) {
+	  if(i == 7) matrix_buffer[i] = temp;
+	  else matrix_buffer[i] = matrix_buffer[i + 1];
+	}
+}
+
 void setMatrix(void){
 	HAL_GPIO_WritePin(ROW0_GPIO_Port, ROW0_Pin, SET);
 	HAL_GPIO_WritePin(ROW1_GPIO_Port, ROW1_Pin, SET);
@@ -192,7 +201,6 @@ void updateLEDMatrix(uint8_t index){
 		break;
 	}
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -251,7 +259,10 @@ int main(void)
 
 		updateLEDMatrix(index_led_matrix);
 		index_led_matrix++;
-		if(index_led_matrix >= 8) index_led_matrix = 0;
+		if(index_led_matrix >= 8) {
+			index_led_matrix = 0;
+			shiftLeft();
+		}
 
 		setTimer2(50);
 	  }
