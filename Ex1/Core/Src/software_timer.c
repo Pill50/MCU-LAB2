@@ -33,6 +33,7 @@ void setTimer3(int duration) {
 	timer3_flag = 0;
 }
 
+
 void timerRun() {
 	if(timer1_counter > 0) {
 		timer1_counter--;
